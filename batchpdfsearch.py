@@ -1,19 +1,24 @@
 ### Scan all files in directory for lines containing a word or phrase
+# Updated 3-25-2024: Update deprecated calls to PyPDF2 and re.findall
 
 # Imports
 import PyPDF2
-from PyPDF2 import PdfFileReader
+#from PyPDF2 import PdfFileReader
+from PyPDF2 import PdfReader
 import re
 import os
 
 # Functions
 def getPdfContents(path):
 		content = []
-		if re.findall('\.pdf', path):
+		if re.findall('\\.pdf', path):
 				p = open(path, "rb")
-				pdf = PdfFileReader(p)
-				for i in range(0, pdf.numPages):
-						content += pdf.getPage(i).extractText().splitlines()
+				#pdf = PdfFileReader(p)
+				pdf = PdfReader(p)
+				#for i in range(0, pdf.numPages):
+				for i in range(0, len(pdf.pages)):
+						#content += pdf.getPage(i).extractText().splitlines()
+						content += pdf.pages[i].extract_text().splitlines()
 				return content
 
 def findText(pattern):
